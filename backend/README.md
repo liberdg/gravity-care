@@ -6,7 +6,7 @@ Prototype de hackathon. **Données simulées. Pas un dispositif médical, aucun 
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python -m app.seed
-uvicorn app.main:app --reload       # documentation : http://localhost:8000/docs
+uvicorn app.main:app --reload       # documentation : http://127.0.0.1:8000/docs
 python -m pytest -q
 ```
 
@@ -28,3 +28,9 @@ python -m pytest -q
 | capteur (clé `X-Sensor-Key`) | envoyer des mesures uniquement |
 
 Variables d'environnement : `DATABASE_URL`, `GRAVITY_SECRET_KEY`, `GRAVITY_SENSOR_KEY`.
+
+## Simulation depuis l'interface
+
+`app/simulation.py` et `app/sim_routes.py` : `POST /api/simulation/start` (médecin ou responsable) rejoue un flux de
+mesures simulées en arrière-plan ; `GET /api/simulation` donne la progression ; `POST /api/simulation/stop` l'arrête.
+Les mesures et alertes précédentes sont remplacées.

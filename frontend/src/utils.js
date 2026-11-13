@@ -42,3 +42,20 @@ export function lastDay(daily) {
 export function formatDateTime(iso) {
   return iso ? new Date(iso + (iso.endsWith('Z') ? '' : 'Z')).toLocaleString('fr-FR', { timeZone: 'UTC' }) + ' UTC' : '—'
 }
+
+// Dernière valeur d'une série et sens de variation par rapport à la veille.
+export function latestWithTrend(points = []) {
+  if (!points.length) return null
+  const last = points[points.length - 1]
+  const prev = points.length > 1 ? points[points.length - 2] : null
+  const delta = prev ? last.value - prev.value : 0
+  return { value: last.value, day: last.day, trend: delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat' }
+}
+
+// Analyse de l'adresse (#/dashboard/2 -> { page: 'dashboard', param: 2 })
+export function parseRoute(hash) {
+  const parts = (hash || '').replace(/^#\/?/, '').split('/').filter(Boolean)
+  const page = parts[0] || 'home'
+  const param = parts[1] ? Number(parts[1]) : null
+  return { page, param: Number.isFinite(param) ? param : null }
+}

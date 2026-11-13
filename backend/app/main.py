@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 
 from . import models  # noqa: F401  (enregistre les tables)
 from .api import router
+from .sim_routes import router as sim_router
 from .database import Base, engine
 from .errors import ApiError
 
@@ -42,3 +43,4 @@ def health():
 
 
 app.include_router(router)
+app.include_router(sim_router)

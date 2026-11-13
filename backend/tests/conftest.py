@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from app import security
+from app import security, simulation
 from app import seed as seed_module
 from app.database import Base, get_db
 from app.main import app
@@ -28,6 +28,7 @@ def make_client(monkeypatch, with_metrics: bool):
             db.close()
 
     app.dependency_overrides[get_db] = override
+    simulation.session_factory = Session
     return TestClient(app)
 
 
@@ -35,12 +36,14 @@ def make_client(monkeypatch, with_metrics: bool):
 def client(monkeypatch):
     yield make_client(monkeypatch, True)
     app.dependency_overrides.clear()
+    simulation.session_factory = None
 
 
 @pytest.fixture()
 def empty_client(monkeypatch):
     yield make_client(monkeypatch, False)
     app.dependency_overrides.clear()
+    simulation.session_factory = None
 
 
 def login(client, username):

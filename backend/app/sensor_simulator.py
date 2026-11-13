@@ -28,7 +28,7 @@ def post(url: str, key: str, payload: dict | None = None):
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--url", default="http://localhost:8000")
+    p.add_argument("--url", default="http://127.0.0.1:8000")
     p.add_argument("--key", default="demo-sensor-key")
     p.add_argument("--interval", type=float, default=0.2)
     p.add_argument("--days", type=int, default=simulate.DAYS)

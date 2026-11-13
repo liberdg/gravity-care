@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { CartesianGrid, Line, LineChart, ReferenceArea, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from './api.js'
-import { buildChartData, formatDateTime, INDICATORS, STATUS_LABELS } from './utils.js'
+import { AstronautAvatar, Icon, INDICATOR_ICON } from './Art.jsx'
+import { buildChartData, formatDateTime, INDICATORS, latestWithTrend, STATUS_LABELS } from './utils.js'
 
 const REFRESH_MS = 5000
 
@@ -11,7 +12,7 @@ function Chart({ indicator, points, forecast, baselineDays, alertLevel }) {
   return (
     <div className="chart">
       <h3>
-        {indicator.label} <small>({indicator.unit})</small>
+        <Icon name={INDICATOR_ICON[indicator.key]} size={17} /> {indicator.label} <small>({indicator.unit})</small>
         {alertLevel && <span className={`badge status-${alertLevel}`}>{STATUS_LABELS[alertLevel]}</span>}
       </h3>
       <ResponsiveContainer width="100%" height={180}>
@@ -32,7 +33,7 @@ function Chart({ indicator, points, forecast, baselineDays, alertLevel }) {
   )
 }
 
-export default function AstronautPage({ id, day, role, onBack }) {
+export default function AstronautPage({ id, day, role, canGoBack }) {
   const [astro, setAstro] = useState(null)
   const [daily, setDaily] = useState({})
   const [status, setStatus] = useState(null)
@@ -104,12 +105,15 @@ export default function AstronautPage({ id, day, role, onBack }) {
 
   return (
     <section>
-      {onBack && <button className="link" onClick={onBack}>← Équipage</button>}
-      <h2>
-        {astro.alias} <small>{astro.mission_role}</small>
-        <span className={`badge status-${status.status}`}>{STATUS_LABELS[status.status]}</span>
-        {isDoctor && <button className="export" onClick={exportReport}>Exporter le rapport</button>}
-      </h2>
+      {canGoBack && <a className="back" href="#/dashboard">← Équipage</a>}
+      <div className="astro-head">
+        <AstronautAvatar code={astro.code} status={status.status} size={84} />
+        <div className="astro-title">
+          <h1>{astro.alias} <small>{astro.mission_role}</small></h1>
+          <span className={`badge status-${status.status}`}>{STATUS_LABELS[status.status]}</span>
+        </div>
+        {isDoctor && <button className="btn primary" onClick={exportReport}>Exporter le rapport</button>}
+      </div>
       {error && <p className="error">Mise à jour impossible ({error}). Dernières données affichées.</p>}
       <p className="hint">
         Jour de mission {day} · Dernière mesure reçue : {formatDateTime(status.last_reading_at)}. La zone grise est la
@@ -120,6 +124,23 @@ export default function AstronautPage({ id, day, role, onBack }) {
           Capteurs silencieux depuis environ {Math.round(status.silent_hours)} h : aucune mesure récente pour cet astronaute.
         </p>
       )}
+
+      <div className="tiles">
+        {INDICATORS.map((ind) => {
+          const l = latestWithTrend(daily[ind.key])
+          const lvl = levelByIndicator[ind.key]
+          return (
+            <div key={ind.key} className={`kpi-tile ${lvl ? `status-${lvl}` : ''}`}>
+              <span className="kpi-ico"><Icon name={INDICATOR_ICON[ind.key]} size={20} /></span>
+              <span className="kpi-label">{ind.label}</span>
+              <span className="kpi-value">
+                {l ? l.value.toFixed(ind.key === 'radiation_dose' ? 2 : 1) : '—'} <small>{ind.unit}</small>
+                {l && <span className={`trend ${l.trend}`}>{l.trend === 'up' ? '▲' : l.trend === 'down' ? '▼' : '■'}</span>}
+              </span>
+            </div>
+          )
+        })}
+      </div>
 
       <h3>Alertes (état au jour {day})</h3>
       {status.reasons.length === 0 ? (

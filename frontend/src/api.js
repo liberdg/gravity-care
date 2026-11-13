@@ -57,5 +57,13 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text }),
     }),
+  simulation: () => request('/api/simulation'),
+  startSimulation: (speed, days) =>
+    request('/api/simulation/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ speed, days }),
+    }),
+  stopSimulation: () => request('/api/simulation/stop', { method: 'POST' }),
   report: (id, day) => request(`/api/astronauts/${id}/report${q(day)}`, { blob: true }),
 }

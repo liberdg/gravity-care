@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { api, session } from './api.js'
+import { AstronautAvatar } from './Art.jsx'
 
 const DEMO = [
-  ['medecin', 'medecin-demo', 'Médecin au sol'],
-  ['responsable', 'responsable-demo', 'Responsable de mission'],
-  ['astro_b', 'astro-b-demo', 'Astronaute (Astro-B)'],
+  ['medecin', 'medecin-demo', 'Médecin au sol', 'Tout voir, notes, rapport, simulation'],
+  ['responsable', 'responsable-demo', 'Responsable de mission', 'Consulter, simulation'],
+  ['astro_b', 'astro-b-demo', 'Astronaute (Astro-B)', 'Son propre suivi'],
 ]
 
 export default function Login({ onLogin }) {
@@ -29,21 +30,26 @@ export default function Login({ onLogin }) {
   }
 
   return (
-    <section className="login">
-      <h2>Connexion</h2>
-      <form onSubmit={submit}>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Identifiant" autoComplete="username" />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mot de passe" autoComplete="current-password" />
-        <button type="submit" disabled={busy || !username || !password}>Se connecter</button>
-      </form>
-      {error && <p className="error">{error}</p>}
-      <div className="hint">
-        <p>Comptes de démonstration (cliquez pour remplir) :</p>
-        <ul>
-          {DEMO.map(([u, p, label]) => (
-            <li key={u}><button className="link" onClick={() => { setUsername(u); setPassword(p) }}>{label}</button></li>
-          ))}
-        </ul>
+    <section className="login page">
+      <div className="login-card">
+        <AstronautAvatar code="G" status="vert" size={72} />
+        <h1>Connexion</h1>
+        <p className="small">Accédez au tableau de bord de l'équipage.</p>
+        <form onSubmit={submit}>
+          <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Identifiant" autoComplete="username" />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mot de passe" autoComplete="current-password" />
+          <button className="btn primary" type="submit" disabled={busy || !username || !password}>Se connecter</button>
+        </form>
+        {error && <p className="error">{error}</p>}
+      </div>
+      <div className="login-demo">
+        <h3>Comptes de démonstration</h3>
+        <p className="small">Cliquez sur un compte pour remplir le formulaire.</p>
+        {DEMO.map(([u, p, label, desc]) => (
+          <button key={u} className="demo-account" onClick={() => { setUsername(u); setPassword(p) }}>
+            <strong>{label}</strong><span>{desc}</span>
+          </button>
+        ))}
       </div>
     </section>
   )

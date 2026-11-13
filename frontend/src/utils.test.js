@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildChartData, formatDateTime, INDICATORS, lastDay, ROLE_LABELS, STATUS_LABELS } from './utils.js'
+import { buildChartData, formatDateTime, INDICATORS, lastDay, latestWithTrend, parseRoute, ROLE_LABELS, STATUS_LABELS } from './utils.js'
 
 const points = [
   { day: 1, value: 10 },
@@ -37,5 +37,16 @@ describe('utils', () => {
   it('a un libellé pour chaque statut et rôle', () => {
     for (const s of ['vert', 'orange', 'rouge', 'calibration']) expect(STATUS_LABELS[s]).toBeTruthy()
     for (const r of ['astronaute', 'medecin', 'responsable']) expect(ROLE_LABELS[r]).toBeTruthy()
+  })
+  it('donne la dernière valeur et la tendance', () => {
+    expect(latestWithTrend(points)).toEqual({ value: 12, day: 3, trend: 'up' })
+    expect(latestWithTrend([{ day: 1, value: 5 }]).trend).toBe('flat')
+    expect(latestWithTrend([])).toBeNull()
+  })
+  it('analyse les adresses', () => {
+    expect(parseRoute('')).toEqual({ page: 'home', param: null })
+    expect(parseRoute('#/dashboard')).toEqual({ page: 'dashboard', param: null })
+    expect(parseRoute('#/dashboard/2')).toEqual({ page: 'dashboard', param: 2 })
+    expect(parseRoute('#/methode').page).toBe('methode')
   })
 })

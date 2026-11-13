@@ -32,7 +32,7 @@ export default function Landing() {
             <a className="btn primary" href="#/dashboard">Ouvrir le tableau de bord</a>
             <a className="btn" href="#/methode">Comprendre la méthode</a>
           </div>
-          <p className="small">Projet du NASA Space Apps Challenge 2026 · EPL, Université de Lomé</p>
+         
         </div>
         <HeroArt />
       </section>
@@ -102,9 +102,7 @@ export default function Landing() {
         <a className="btn primary" href="#/dashboard">Ouvrir le tableau de bord</a>
       </section>
 
-      <footer className="footer">
-        GRAVITY CARE · NASA Space Apps Challenge 2026 · Projet tutoré, EPL, Université de Lomé · Données simulées, usage pédagogique
-      </footer>
+      
     </div>
   )
 }

@@ -1,0 +1,49 @@
+:root { color-scheme: dark; --bg:#0b1220; --panel:#131c2e; --border:#243049; --text:#e5ecf6; --muted:#8fa0ba;
+  --vert:#2e9e6b; --orange:#e08a1e; --rouge:#d64545; --calib:#64748b; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family: system-ui, sans-serif; }
+.app { max-width: 1100px; margin: 0 auto; padding: 0 16px 40px; }
+.banner { background:#3a2a05; color:#ffd27a; text-align:center; padding:8px; font-size:13px; font-weight:600;
+  position:sticky; top:0; z-index:5; border-bottom:1px solid #5c4410; }
+.header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding:16px 0; }
+.header h1 { margin:0; font-size:22px; letter-spacing:2px; }
+.day-picker { display:flex; align-items:center; gap:10px; color:var(--muted); font-size:14px; }
+.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:14px; }
+.card { background:var(--panel); border:1px solid var(--border); border-left:6px solid var(--calib); border-radius:10px;
+  padding:16px; text-align:left; color:inherit; display:flex; flex-direction:column; gap:8px; cursor:pointer; font:inherit; }
+.card:hover { border-color:#3a4d73; }
+.card.status-vert { border-left-color:var(--vert); } .card.status-orange { border-left-color:var(--orange); }
+.card.status-rouge { border-left-color:var(--rouge); }
+.card-title { font-size:18px; font-weight:700; } .card-role, .card-count, .hint { color:var(--muted); font-size:13px; }
+.badge { display:inline-block; font-size:12px; font-weight:700; padding:2px 8px; border-radius:999px; margin-left:8px; width:fit-content; background:var(--calib); color:#fff; }
+.card .badge { margin-left:0; }
+.badge.status-vert { background:var(--vert); } .badge.status-orange { background:var(--orange); } .badge.status-rouge { background:var(--rouge); }
+.charts { display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:14px; margin:16px 0; }
+.chart { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:12px; }
+.chart h3 { margin:0 0 8px; font-size:14px; } small { color:var(--muted); font-weight:400; }
+.alerts, .notes { list-style:none; padding:0; display:flex; flex-direction:column; gap:8px; }
+.alert { background:var(--panel); border:1px solid var(--border); border-left:5px solid var(--calib); border-radius:8px; padding:10px 12px; font-size:14px; }
+.alert.status-orange { border-left-color:var(--orange); } .alert.status-rouge { border-left-color:var(--rouge); }
+.alert .badge { margin:0 8px 0 0; }
+.notes li { background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:14px; }
+.note-form { display:flex; gap:8px; }
+.note-form input { flex:1; padding:8px; border-radius:6px; border:1px solid var(--border); background:var(--panel); color:var(--text); }
+button { font:inherit; } .note-form button { padding:8px 14px; border-radius:6px; border:0; background:#3b82f6; color:#fff; cursor:pointer; }
+.link { background:none; border:0; color:#7cb0ff; cursor:pointer; padding:0; margin-bottom:8px; }
+.error { color:#ff8a8a; }
+
+.header-right { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.who { color:var(--muted); font-size:13px; }
+.offline { background:#3b1d1d; color:#ffb4b4; text-align:center; padding:6px; font-size:13px; }
+.login { max-width:380px; margin:40px auto; }
+.login form { display:flex; flex-direction:column; gap:10px; }
+.login input { padding:10px; border-radius:6px; border:1px solid var(--border); background:var(--panel); color:var(--text); font:inherit; }
+.login button[type=submit], .ack, .export { padding:8px 14px; border-radius:6px; border:0; background:#3b82f6; color:#fff; cursor:pointer; }
+.login button[disabled] { opacity:.5; cursor:not-allowed; }
+.login .hint ul { list-style:none; padding:0; display:flex; flex-direction:column; gap:4px; }
+.silent { color:#ffd27a; font-size:13px; font-weight:600; }
+.silent-box { margin:8px 0; }
+.reco { color:var(--muted); font-size:12px; margin-top:6px; }
+.acked { color:var(--vert); font-size:13px; }
+.ack { margin-left:12px; padding:3px 10px; font-size:12px; }
+.export { margin-left:14px; font-size:13px; }
